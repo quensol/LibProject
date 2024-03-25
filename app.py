@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 # 设置一个用于加密 session 数据的密钥
-app.config['SECRET_KEY'] = 'secretkey'
+app.config['SECRET_KEY'] = 'WZ7+fw,=AQ0Cx?sis_>rz1W3'
 # 设置数据库连接地址
 DB_URI = 'mysql+pymysql://root:123456@127.0.0.1:3306/akashi'
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
