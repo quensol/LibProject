@@ -20,11 +20,20 @@ db = SQLAlchemy(app)
 class Readers(db.Model):
     __tablename__ = 'readers'  # 设置表名, 表名默认为类名小写
     reader_id = db.Column(db.Integer, primary_key=True)  # 设置主键, 默认自增
-    reader_name = db.Column(db.String(50), unique=True, nullable=False)
-    reader_password = db.Column(db.String(100), nullable=False)
+    reader_name = db.Column(db.String(20), unique=True, nullable=False)
+    reader_password = db.Column(db.String(50), nullable=False)
 
     def __repr__(self):
         return f'<Readers {self.reader_name}>'
+
+class Admin(db.Model):
+    __tablename__ = 'admin'
+    admin_id = db.Column(db.Integer, primary_key=True)
+    admin_name = db.Column(db.String(20), unique=True, nullable=False)
+    admin_password = db.Column(db.String(50), nullable=False)
+
+    def __repr__(self):
+        return f'<Admin {self.admin_name}>'
 
 
 # 设置应用上下文
@@ -35,40 +44,59 @@ with app.app_context():
 
 # 路由：主页
 @app.route('/')
-def index():
+def showlogininfo():
     if 'reader_name' in session:
         return f'已登录，用户名：{session["reader_name"]}'
+    if 'admin_name' in session:
+        return f'已登录，admin用户，用户名：{session["admin_name"]}'
     return '未登录'
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():  # put application's code here
     if request.method == 'POST':
-        username = request.form['username']
+        readername = request.form['username']
         password = request.form['password']
-        user = Readers.query.filter_by(reader_name=username, reader_password=password).first()
+        user = Readers.query.filter_by(reader_name=readername, reader_password=password).first()
         if user:
-            session['reader_name'] = username
+            session['reader_name'] = readername
             return redirect('/')
         else:
             return '登录失败'
-    return render_template('index.html')
+    return render_template('login.html')
 
 
 # 路由：注销
 @app.route('/logout')
 def logout():
     session.pop('reader_name', None)
+    session.pop('admin_name', None)
+    session.pop('job', None)
     return redirect('/')
 
 
-@app.route('/user/<username>')
-def show_user_profile(username):
-    if username == '潘文嘉' or username == '蒋杜飞' or username == '杨庆豪' or username == '王一丁':
-        existed = 1;
-    else:
-        existed = 0;
-    return render_template('user.html', user=username, existed=existed)
+@app.route('/index')
+def index():
+    if 'admin_name' in session:
+        username = session['admin_name']
+        job = session['job']
+        return render_template('index.html', username=username, job=job)
+    return '未登录'
+
+
+@app.route('/elogin', methods=['GET', 'POST'])
+def elogin():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = Admin.query.filter_by(admin_name=username, admin_password=password).first()
+        if user:
+            session['admin_name'] = username
+            session['job'] = 'admin'
+            return redirect('/index')
+        else:
+            return '登录失败'
+    return render_template('elogin.html')
 
 
 if __name__ == '__main__':
