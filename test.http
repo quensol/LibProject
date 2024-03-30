@@ -1,0 +1,14 @@
+POST http://127.0.0.1:5000/readers/
+Content-Type: application/json
+
+{
+  "reader_name": "post test",
+  "reader_password": "wow",
+  "reader_type": "student"
+}
+
+###
+GET http://127.0.0.1:5000/readers/
+Accept: application/json
+
+###
