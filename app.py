@@ -1,6 +1,6 @@
 import datetime
 
-from flask import Flask, url_for, request, redirect, render_template, session
+from flask import Flask, url_for, request, redirect, render_template, session, make_response
 from flask.views import MethodView
 from extension import db
 from models import Readers
@@ -119,7 +119,7 @@ def logout():
     session.pop('reader_name', None)
     session.pop('admin_name', None)
     session.pop('job', None)
-    return redirect('/')
+    return redirect('/elogin')
 
 
 @app.route('/index')
@@ -127,7 +127,11 @@ def index():
     if 'admin_name' in session:
         username = session['admin_name']
         job = session['job']
-        return render_template('index.html', username=username, job=job)
+        response = make_response(render_template('index.html', username=username, job=job))
+        response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+        return response
     return '未登录'
 
 

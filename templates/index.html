@@ -127,7 +127,7 @@
         <div class="profile_name">{{ username }}</div>
         <div class="job">{{ job }}</div>
       </div>
-      <i class='bx bx-log-out' ></i>
+      <i class='bx bx-log-out' onclick="logout()"></i>
     </div>
   </li>
 </ul>
@@ -135,11 +135,14 @@
   <section class="home-section">
     <div class="home-content">
       <i class='bx bx-menu' ></i>
-      <span class="text">图书管理</span>
+      <span class="text">‘页面名称’</span>
     </div>
   </section>
 
   <script>
+      function logout() {
+        window.location.href = '/logout';
+      }
 
   let arrow = document.querySelectorAll(".arrow");
   for (var i = 0; i < arrow.length; i++) {
