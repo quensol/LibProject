@@ -49,9 +49,12 @@ span {
   pointer-events: none;
 }
 .sidebar .nav-links{
+  display: flex;
   height: 100%;
   padding: 30px 0 150px 0;
   overflow: auto;
+  flex-direction: column;
+  justify-content: center;
 }
 .sidebar.close .nav-links{
   overflow: visible;

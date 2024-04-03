@@ -125,9 +125,8 @@ def logout():
 @app.route('/index')
 def index():
     if 'admin_name' in session:
-        username = session['admin_name']
-        job = session['job']
-        response = make_response(render_template('index.html', username=username, job=job))
+        inject_global_params()
+        response = make_response(render_template('index.html'))
         response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
         response.headers['Pragma'] = 'no-cache'
         response.headers['Expires'] = '0'
@@ -148,6 +147,22 @@ def elogin():
         else:
             return '登录失败'
     return render_template('elogin.html')
+
+
+# 通过上下文处理器来注入参数
+@app.context_processor
+def inject_global_params():
+    # 在这个示例中，我们假设有一个用户名参数
+    username = session.get('admin_name', None)
+    # 获取当前请求中的参数，例如 GET 或 POST 请求
+    job = session.get('job', None)
+    # 返回一个字典，包含所有要注入到模板中的参数
+    return dict(username=username, job=job)
+
+
+@app.route('/index/return')
+def toreturnpage():
+    return render_template('returnpage.html', pagename='图书归还')
 
 
 reader_view = ReaderApi.as_view('reader_api')

@@ -34,8 +34,8 @@
       </li>
 
       <li>
-        <a href="#">
-          <i class='bx bx-collection' ></i>
+        <a href="{{ url_for('toreturnpage') }}">
+          <i class='bx bx-barcode-reader' ></i>
           <span class="link_name">图书归还</span>
         </a>
         <ul class="sub-menu blank">
@@ -44,80 +44,50 @@
       </li>
 
       <li>
+        <a href="#">
+          <i class='bx bx-book-alt' ></i>
+          <span class="link_name">查看报表</span>
+        </a>
+        <ul class="sub-menu blank">
+          <li><a class="link_name" href="#">查看报表</a></li>
+        </ul>
+      </li>
+
+      <li>
         <div class="iocn-link">
           <a href="#">
-            <i class='bx bx-book-alt' ></i>
-            <span class="link_name">Posts</span>
+            <i class='bx bx-donate-heart' ></i>
+            <span class="link_name">互借管理</span>
           </a>
           <i class='bx bxs-chevron-down arrow' ></i>
         </div>
         <ul class="sub-menu">
-          <li><a class="link_name" href="#">Posts</a></li>
-          <li><a href="#">Web Design</a></li>
-          <li><a href="#">Login Form</a></li>
-          <li><a href="#">Card Design</a></li>
+          <li><a class="link_name" href="#">互借管理</a></li>
+          <li><a href="#">管理用户</a></li>
+          <li><a href="#">管理图书</a></li>
         </ul>
       </li>
+
       <li>
         <a href="#">
-          <i class='bx bx-pie-chart-alt-2' ></i>
-          <span class="link_name">Analytics</span>
+          <i class='bx bx-error-alt' ></i>
+          <span class="link_name">处理违规</span>
         </a>
         <ul class="sub-menu blank">
-          <li><a class="link_name" href="#">Analytics</a></li>
+          <li><a class="link_name" href="#">处理违规</a></li>
         </ul>
       </li>
-      <li>
-        <a href="#">
-          <i class='bx bx-line-chart' ></i>
-          <span class="link_name">Chart</span>
-        </a>
-        <ul class="sub-menu blank">
-          <li><a class="link_name" href="#">Chart</a></li>
-        </ul>
-      </li>
-      <li>
-        <div class="iocn-link">
-          <a href="#">
-            <i class='bx bx-plug' ></i>
-            <span class="link_name">Plugins</span>
-          </a>
-          <i class='bx bxs-chevron-down arrow' ></i>
-        </div>
-        <ul class="sub-menu">
-          <li><a class="link_name" href="#">Plugins</a></li>
-          <li><a href="#">UI Face</a></li>
-          <li><a href="#">Pigments</a></li>
-          <li><a href="#">Box Icons</a></li>
-        </ul>
-      </li>
+
       <li>
         <a href="#">
           <i class='bx bx-compass' ></i>
-          <span class="link_name">Explore</span>
+          <span class="link_name">专栏编辑</span>
         </a>
         <ul class="sub-menu blank">
-          <li><a class="link_name" href="#">Explore</a></li>
+          <li><a class="link_name" href="#">专栏编辑</a></li>
         </ul>
       </li>
-      <li>
-        <a href="#">
-          <i class='bx bx-history'></i>
-          <span class="link_name">History</span>
-        </a>
-        <ul class="sub-menu blank">
-          <li><a class="link_name" href="#">History</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="#">
-          <i class='bx bx-cog' ></i>
-          <span class="link_name">Setting</span>
-        </a>
-        <ul class="sub-menu blank">
-          <li><a class="link_name" href="#">Setting</a></li>
-        </ul>
-      </li>
+
       <li>
     <div class="profile-details">
       <div class="profile-content">
@@ -135,7 +105,10 @@
   <section class="home-section">
     <div class="home-content">
       <i class='bx bx-menu' ></i>
-      <span class="text">‘页面名称’</span>
+      <span class="text">{{ pagename }}</span>
+    </div>
+    <div>
+      {% block content %}{% endblock %}
     </div>
   </section>
 
