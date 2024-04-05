@@ -1,6 +1,76 @@
 {% extends 'index.html' %}
 
+
 {% block content %}
-<h1>This is Page 1</h1>
-<p>Content for Page 1 goes here...</p>
+    <html lang="zh" data-theme="light">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.conditional.min.css"/>
+        <style>
+            .centered-text {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                text-align: center;
+            }
+        </style>
+        <main class="pico">
+            <div class="centered-text">
+                <article aria-busy="true">请扫描书本条形码</article>
+                <a href="#" id="inputlink">手动输入ISBN</a>
+            </div>
+            <dialog id="inputISBN">
+                <article>
+                  <h2 style="font-family: 'Noto Serif SC', sans-serif">手动输入ISBN</h2>
+                  <hr/>
+                  <input id="input" name="text" placeholder="ISBN" aria-label="Text" />
+                  <footer>
+                    <button className="secondary" id="cancel">
+                      取消
+                    </button>
+                    <button>确认</button>
+                  </footer>
+                </article>
+            </dialog>
+            <script>
+                const link = document.getElementById("inputlink");
+                const cancelButton = document.getElementById("cancel");
+                const dialog = document.getElementById("inputISBN");
+                const input = document.getElementById("input");
+                var htmlElement = document.querySelector("html");
+                dialog.returnValue = "favAnimal";
+
+                function openCheck(dialog) {
+                if (dialog.open) {
+                    console.log("Dialog open");
+                } else {
+                    console.log("Dialog closed");
+                }
+                }
+
+                // link opens a modal dialog
+                link.addEventListener("click", () => {
+                htmlElement.classList.add("modal-is-opening")
+                dialog.showModal();
+                openCheck(dialog);
+                setTimeout(function() {
+                    htmlElement.classList.remove("modal-is-opening");
+                }, 400);
+                });
+
+                // Form cancel button closes the dialog box
+                cancelButton.addEventListener("click", () => {
+                    console.log(htmlElement.getAttribute("class"));
+                htmlElement.classList.add("modal-is-closing")
+                setTimeout(function() {
+                    dialog.close("animalNotChosen");
+                }, 400);
+                input.value = "";
+                setTimeout(function() {
+                    htmlElement.classList.remove("modal-is-closing");
+                }, 400);
+                openCheck(dialog);
+                });
+            </script>
+        </main>
+    </html>
 {% endblock %}
