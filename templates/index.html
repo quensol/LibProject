@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='index/style.css') }}">
     <!-- Boxiocns CDN Link -->
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.conditional.min.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
    </head>
 <body>
@@ -27,7 +28,7 @@
         </div>
         <ul class="sub-menu">
           <li><a class="link_name" href="#">信息维护</a></li>
-          <li><a href="#">图书信息</a></li>
+          <li><a href="{{ url_for('tobookspage') }}">图书信息</a></li>
           <li><a href="#">读者信息</a></li>
           <li><a href="#">管理人员信息</a></li>
         </ul>
@@ -106,6 +107,11 @@
     <div class="home-content">
       <i class='bx bx-menu' ></i>
       <span class="text">{{ pagename }}</span>
+      {% if displaysearch == 1 %}
+          <div class="pico">
+            <input type="search" name="search" placeholder="Search" aria-label="Search"/>
+          </div>
+      {% endif %}
     </div>
     <div>
       {% block content %}{% endblock %}
@@ -125,11 +131,26 @@
     });
   }
 
-  let sidebar = document.querySelector(".sidebar");
-  let sidebarBtn = document.querySelector(".bx-menu");
-  console.log(sidebarBtn);
-  sidebarBtn.addEventListener("click", ()=>{
-    sidebar.classList.toggle("close");
+  document.addEventListener("DOMContentLoaded", function() {
+    let sidebar = document.querySelector(".sidebar");
+    let sidebarBtn = document.querySelector(".bx-menu");
+    let sidebarState = localStorage.getItem("sidebarState");
+
+    // 如果之前有保存的侧边栏状态，则根据其值设置侧边栏的初始状态
+    if (sidebarState === "sidebar close") {
+        sidebar.classList.add("close");
+    }
+
+    sidebarBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("close");
+
+        // 当侧边栏状态改变时，保存新状态到本地存储中
+        if (sidebar.classList.contains("close")) {
+            localStorage.setItem("sidebarState", "sidebar close");
+        } else {
+            localStorage.setItem("sidebarState", "sidebar");
+        }
+    });
   });
   </script>
 

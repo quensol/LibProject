@@ -11,3 +11,14 @@ class Readers(db.Model):
     reader_type = db.Column(db.Enum('teacher', 'student'), nullable=False)
     is_active = db.Column(db.Boolean, default=True, nullable=True)
     account_balance = db.Column(db.Numeric(10, 2), default=0.00, nullable=True)
+
+
+class Books(db.Model):
+    __tablename__ = 'books'
+    id = db.Column(db.Integer, primary_key=True)
+    book_title = db.Column(db.String(255), nullable=False)
+    author = db.Column(db.String(255), nullable=False)
+    publisher = db.Column(db.String(255), nullable=False)
+    ISBN = db.Column(db.String(13), nullable=False, unique=True)
+    total_quantity = db.Column(db.Integer, nullable=False)
+    remaining_quantity = db.Column(db.Integer, nullable=False)

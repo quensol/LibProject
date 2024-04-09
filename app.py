@@ -1,9 +1,10 @@
 import datetime
 
-from flask import Flask, url_for, request, redirect, render_template, session, make_response
+from flask import Flask, request, redirect, render_template, session, make_response
 from flask.views import MethodView
+
 from extension import db
-from models import Readers
+from models import Readers, Books
 
 app = Flask(__name__)
 # 设置一个用于加密 session 数据的密钥
@@ -163,6 +164,17 @@ def inject_global_params():
 @app.route('/index/return')
 def toreturnpage():
     return render_template('returnpage.html', pagename='图书归还')
+
+
+@app.route('/index/books')
+def tobookspage():
+    books = Books.query.all()
+    return render_template('books.html', pagename='图书信息维护', books=books)
+
+
+@app.route('/index/searchbook')
+def tosearchbookpage():
+    return render_template('searchbook.html', pagename='图书信息维护')
 
 
 reader_view = ReaderApi.as_view('reader_api')

@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<html lang="zh" data-theme="light">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.conditional.min.css" />
+    <style>
+            .table {
+                border-collapse: collapse;
+                width: calc(100% - 210px); /* 总宽度减去左右边距 */
+                margin-left: 30px; /* 左边距 */
+                margin-right: 180px; /* 右边距 */
+                white-space: nowrap;
+                --pico-background-color: #F1F1F1;
+            }
+        </style>
+    <main class="pico" style="background: #E4E9F7">
+        <div class="overflow-auto" style="margin-top: 10px">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">书名</th>
+                        <th scope="col">作者</th>
+                        <th scope="col">出版社</th>
+                        <th scope="col">ISBN</th>
+                        <th scope="col">图书总量</th>
+                        <th scope="col">图书剩余</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in books %}
+                        <tr>
+                            <th scope="row">{{ book.book_title }}</th>
+                            <td>{{ book.author }}</td>
+                            <td>{{ book.publisher }}</td>
+                            <td>{{ book.ISBN }}</td>
+                            <td>{{ book.total_quantity }}</td>
+                            <td>{{ book.remaining_quantity }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+</html>
+{% endblock %}
