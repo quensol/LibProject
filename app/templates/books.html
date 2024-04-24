@@ -1,0 +1,189 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<html lang="zh" data-theme="light">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.conditional.min.css" />
+    <script type="text/javascript" src="../static/js/jquery-3.7.1.min.js" ></script>
+    <style>
+            .table {
+                border-collapse: collapse;
+                width: calc(100% - 210px); /* 总宽度减去左右边距 */
+                margin-left: 30px; /* 左边距 */
+                margin-right: 180px; /* 右边距 */
+                white-space: nowrap;
+                --pico-background-color: #F1F1F1;
+            }
+        </style>
+    <main class="pico" style="background: #E4E9F7">
+        <div class="overflow-auto" style="margin-top: 10px">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">书名</th>
+                        <th scope="col">作者</th>
+                        <th scope="col">出版社</th>
+                        <th scope="col">ISBN</th>
+                        <th scope="col">图书总量</th>
+                        <th scope="col">图书剩余</th>
+                        <th scope="col">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in books %}
+                        <tr>
+                            <td style="display:none;" class="book_id">{{ book.id }}</td>
+                            <td class="book_title">{{ book.book_title }}</td>
+                            <td class="author">{{ book.author }}</td>
+                            <td class="publisher">{{ book.publisher }}</td>
+                            <td class="isbn">{{ book.ISBN }}</td>
+                            <td class="total_quantity">{{ book.total_quantity }}</td>
+                            <td class="remaining_quantity">{{ book.remaining_quantity }}</td>
+                            <td>
+                                <a style="margin-right: 10px"
+                                   href="#" class="edit" data-toggle="modal"
+                                   data-target="#editModal">修改</a> <a href="#">删除</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <dialog class="modal" id="editModal">
+              <article class="modal-content">
+                  <h2>修改图书信息</h2>
+                  <input type="hidden" id="bookid" value="">
+                  <label for="bookname">书名</label>
+                  <input type="text" id="bookname" placeholder="书名" aria-label="Text" />
+                  <label for="author">作者</label>
+                  <input type="text" id="author" placeholder="作者" aria-label="Text" />
+                  <label for="publisher">出版社</label>
+                  <input type="text" id="publisher" placeholder="出版社" aria-label="Text" />
+                  <label for="isbn">ISBN</label>
+                  <input type="text" id="isbn" placeholder="ISBN" aria-label="Text" />
+                  <label for="totalquantity">图书总量</label>
+                  <input type="text" id="totalquantity" placeholder="图书总量" aria-label="Text" />
+                  <label for="remainingquantity">图书剩余</label>
+                  <input type="text" id="remainingquantity" placeholder="图书剩余" aria-label="Text" />
+                  <footer>
+                      <button id="cancel">Cancel</button>
+                      <button id="confirm-update">Confirm</button>
+                  </footer>
+              </article>
+        </dialog>
+
+        <script>
+            const links = document.querySelectorAll(".edit");
+            const dialog = document.getElementById("editModal");
+            const cancelButton = document.getElementById("cancel");
+            const modalContent = document.querySelector(".modal-content");
+            var htmlElement = document.querySelector("html");
+            function showAlert() {
+                alert('This is an alert message!');
+            }
+            function closemodal() {
+                htmlElement.classList.add("modal-is-closing")
+                setTimeout(function() {
+                    dialog.close();
+                    htmlElement.classList.remove("modal-is-open")
+                }, 400);
+                setTimeout(function() {
+                    htmlElement.classList.remove("modal-is-closing");
+                }, 400);
+            }
+
+            $(document).ready(function() {
+                $('.edit').click(function() {
+                    var row = $(this).closest('tr');
+                    var book_id = row.find('.book_id').text();
+                    var book_title = row.find('.book_title').text();
+                    var author = row.find('.author').text();
+                    var publisher = row.find('.publisher').text();
+                    var isbn = row.find('.isbn').text();
+                    var total_quantity = row.find('.total_quantity').text();
+                    var remaining_quantity = row.find('.remaining_quantity').text();
+
+                    $('#bookid').val(book_id);
+                    $('#bookname').val(book_title);
+                    $('#author').val(author);
+                    $('#publisher').val(publisher);
+                    $('#isbn').val(isbn);
+                    $('#totalquantity').val(total_quantity);
+                    $('#remainingquantity').val(remaining_quantity);
+                });
+            });
+
+            links.forEach(link => {
+                link.addEventListener("click", (event) => {
+                    event.preventDefault();
+                    htmlElement.classList.add("modal-is-opening")
+                    dialog.showModal();
+                    htmlElement.classList.add("modal-is-open")
+                    setTimeout(function() {
+                        htmlElement.classList.remove("modal-is-opening");
+                    }, 400);
+                });
+            });
+
+            document.getElementById('confirm-update').addEventListener('click', function() {
+                // 获取输入框的值
+                var bookid = document.getElementById('bookid').value;
+                var bookname = document.getElementById('bookname').value;
+                var author = document.getElementById('author').value;
+                var publisher = document.getElementById('publisher').value;
+                var isbn = document.getElementById('isbn').value;
+                var totalquantity = document.getElementById('totalquantity').value;
+                var remainingquantity = document.getElementById('remainingquantity').value;
+
+                // 构建要发送的数据
+                var formData = new FormData();
+                formData.append('bookname', bookname);
+                formData.append('author', author);
+                formData.append('publisher', publisher);
+                formData.append('isbn', isbn);
+                formData.append('totalquantity', totalquantity);
+                formData.append('remainingquantity', remainingquantity);
+
+                // 发送POST请求
+                fetch(`/api/books/${bookid}`, { // 注意替换[BOOK_ID]为实际的书籍ID
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    closemodal();
+                    // 保存当前的滚动位置
+                    sessionStorage.setItem('scrollX', window.scrollX);
+                    sessionStorage.setItem('scrollY', window.scrollY);
+                    // 刷新页面
+                    location.reload();
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    showAlert();
+                });
+            });
+
+            window.onload = function() {
+                if (sessionStorage.getItem('scrollX') !== null && sessionStorage.getItem('scrollY') !== null) {
+                    // 恢复滚动位置
+                    window.scrollTo(sessionStorage.getItem('scrollX'), sessionStorage.getItem('scrollY'));
+                }
+            };
+
+            cancelButton.addEventListener("click", () => {
+                closemodal();
+            });
+
+            dialog.addEventListener("click", function(event) {
+                // 检查点击事件是否发生在模态框内容之外
+                if (!modalContent.contains(event.target)) {
+                    closemodal();
+                }
+            });
+        </script>
+    </main>
+</html>
+{% endblock %}

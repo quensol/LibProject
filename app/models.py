@@ -1,4 +1,4 @@
-from extension import db
+from app import db
 
 
 # 构建模型类  类->表  类属性->字段  实例对象->记录
@@ -13,6 +13,13 @@ class Readers(db.Model):
     account_balance = db.Column(db.Numeric(10, 2), default=0.00, nullable=True)
 
 
+class Admin(db.Model):
+    __tablename__ = 'admin'
+    admin_id = db.Column(db.Integer, primary_key=True)
+    admin_name = db.Column(db.String(20), unique=True, nullable=False)
+    admin_password = db.Column(db.String(50), nullable=False)
+
+
 class Books(db.Model):
     __tablename__ = 'books'
     id = db.Column(db.Integer, primary_key=True)
@@ -22,3 +29,14 @@ class Books(db.Model):
     ISBN = db.Column(db.String(13), nullable=False, unique=True)
     total_quantity = db.Column(db.Integer, nullable=False)
     remaining_quantity = db.Column(db.Integer, nullable=False)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'book_title': self.book_title,
+            'author': self.author,
+            'publisher': self.publisher,
+            'ISBN': self.ISBN,
+            'total_quantity': self.total_quantity,
+            'remaining_quantity': self.remaining_quantity
+        }

@@ -4,7 +4,7 @@ import pyzbar.pyzbar as pyzbar
 
 
 def zbar_demo():
-    img = cv2.imread(r'static/image/10007.jpg')
+    img = cv2.imread(r'app/static/image/10007.jpg')
     zbars = pyzbar.decode(img)
 
     order = 1
