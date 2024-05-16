@@ -15,9 +15,20 @@
                 --pico-background-color: #F1F1F1;
             }
         </style>
-    <main class="pico" style="background: #E4E9F7">
-        <div class="overflow-auto" style="margin-top: 10px">
-            <table class="table">
+    <main class="pico" style="background: #E4E9F7; width: 100%;">
+        <div class="overflow-auto">
+        <input
+                style="display: block; /* 使input表现为块级元素 */
+                margin-top: 10px;
+                margin-right: auto; /* 将其推向左侧 */
+                margin-left: 30px; /* 确保左侧没有额外的外边距 */
+                width: 50%;"
+                type="search"
+                name="search"
+                placeholder="搜索"
+                aria-label="Search"
+        />
+            <table class="table" style="width: 95%">
                 <thead>
                     <tr>
                         <th scope="col">书名</th>
