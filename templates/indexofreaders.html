@@ -3,7 +3,7 @@
 <html lang="zh" dir="ltr">
   <head>
     <meta charset="UTF-8">
-    <title> 员工业务页面 </title>
+    <title> 用户页面 </title>
     <link rel="stylesheet" href="{{ url_for('static',filename='index/style.css') }}">
     <!-- Boxiocns CDN Link -->
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
@@ -17,40 +17,23 @@
       <span class="logo_name">Lib</span>
     </div>
     <ul class="nav-links">
-
       <li>
-        <div class="iocn-link">
-          <a href="#">
-            <i class='bx bx-grid-alt' ></i>
-            <span class="link_name">信息维护</span>
-          </a>
-          <i class='bx bxs-chevron-down arrow' ></i>
-        </div>
-        <ul class="sub-menu">
-          <li><a class="link_name" href="#">信息维护</a></li>
-          <li><a href="{{ url_for('tobookspage') }}">图书信息</a></li>
-          <li><a href="{{ url_for('toreaderspage') }}">读者信息</a></li>
-          <li><a href="{{ url_for('tomanagepage') }}">管理人员信息</a></li>
-        </ul>
-      </li>
-
-      <li>
-        <a href="{{ url_for('toreturnpage') }}">
+        <a href="{{ url_for('toborrowingpage') }}">
           <i class='bx bx-barcode-reader' ></i>
-          <span class="link_name">图书归还</span>
+          <span class="link_name">查询借阅</span>
         </a>
         <ul class="sub-menu blank">
-          <li><a class="link_name" href="#">图书归还</a></li>
+          <li><a class="link_name" href="#">查询借阅</a></li>
         </ul>
       </li>
 
       <li>
         <a href="#">
           <i class='bx bx-book-alt' ></i>
-          <span class="link_name">查看报表</span>
+          <span class="link_name">图书推荐</span>
         </a>
         <ul class="sub-menu blank">
-          <li><a class="link_name" href="#">查看报表</a></li>
+          <li><a class="link_name" href="#">图书推荐</a></li>
         </ul>
       </li>
 
@@ -60,12 +43,9 @@
             <i class='bx bx-donate-heart' ></i>
             <span class="link_name">互借管理</span>
           </a>
-          <i class='bx bxs-chevron-down arrow' ></i>
         </div>
         <ul class="sub-menu">
-          <li><a class="link_name" href="#">互借管理</a></li>
-          <li><a href="#">管理用户</a></li>
-          <li><a href="#">管理图书</a></li>
+          <li><a class="link_name" href="#">图书互借</a></li>
         </ul>
       </li>
 
@@ -80,12 +60,19 @@
       </li>
 
       <li>
-        <a href="#">
-          <i class='bx bx-compass' ></i>
-          <span class="link_name">专栏编辑</span>
-        </a>
-        <ul class="sub-menu blank">
-          <li><a class="link_name" href="#">专栏编辑</a></li>
+        <div class="iocn-link">
+          <a href="#">
+            <i class='bx bx-grid-alt' ></i>
+            <span class="link_name">信息专栏</span>
+          </a>
+          <i class='bx bxs-chevron-down arrow' ></i>
+        </div>
+        <ul class="sub-menu">
+          <li><a class="link_name" href="#">信息维护</a></li>
+          <li><a href="{{ url_for('infoanm') }}">信息公告</a></li>
+          <li><a href="{{ url_for('lte') }}">读者来信</a></li>
+            <!-- letters to editor -->
+          <li><a href="{{ url_for('readercons') }}">读者咨询</a></li>
         </ul>
       </li>
 
@@ -95,8 +82,8 @@
         <img src="{{ url_for('static',filename='index/image/profile.jpg') }}" alt="profile">
       </div>
       <div class="name-job">
-        <div class="profile_name">{{ username }}</div>
-        <div class="job">{{ job }}</div>
+        <div class="profile_name">小明</div>
+        <div class="job">学生</div>
       </div>
       <i class='bx bx-log-out' onclick="logout()"></i>
     </div>

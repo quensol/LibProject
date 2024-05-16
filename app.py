@@ -102,25 +102,47 @@ def showlogininfo():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():  # put application's code here
+
     if request.method == 'POST':
         readername = request.form['username']
         password = request.form['password']
         user = Readers.query.filter_by(reader_name=readername, reader_password=password).first()
         if user:
             session['reader_name'] = readername
-            return redirect('/')
+            return redirect('/indexofreaders')
         else:
             return '登录失败'
     return render_template('login.html')
 
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        reader_name = request.form['username']
+        reader_password = request.form['password']
+        reader_type = request.form['type']
+        # 创建 User 实例并保存到数据库中
+        new_reader = Readers(reader_name=reader_name,
+                             reader_password=reader_password,
+                             reader_type=reader_type)
+        db.session.add(new_reader)
+        db.session.commit()
+        return redirect('/login')
+    return render_template('register.html')
+
+
 # 路由：注销
+
+
 @app.route('/logout')
 def logout():
-    session.pop('reader_name', None)
-    session.pop('admin_name', None)
-    session.pop('job', None)
-    return redirect('/elogin')
+    if 'reader_name' in session:
+        session.pop('reader_name', None)
+        return redirect('/login')
+    elif 'admin_name' in session:
+        session.pop('admin_name', None)
+        session.pop('job', None)
+        return redirect('/elogin')
 
 
 @app.route('/index')
@@ -128,6 +150,18 @@ def index():
     if 'admin_name' in session:
         inject_global_params()
         response = make_response(render_template('index.html'))
+        response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+        return response
+    return '未登录'
+
+
+@app.route('/indexofreaders')
+def indexofreaders():
+    if 'reader_name' in session:
+        inject_global_params()
+        response = make_response(render_template('indexofreaders.html'))
         response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
         response.headers['Pragma'] = 'no-cache'
         response.headers['Expires'] = '0'
@@ -172,15 +206,61 @@ def tobookspage():
     return render_template('books.html', pagename='图书信息维护', books=books)
 
 
+@app.route('/index/readers')
+def toreaderspage():
+    readers = Readers.query.all()
+    return render_template('readers.html', pagename='读者信息维护', readers=readers)
+
+@app.route('/indexofreaders/infoanm')
+def infoanm():
+    return render_template('report.html', pagename='图书归还')
+
+
+@app.route('/indexofreaders/lte')
+def lte():
+    books = Books.query.all()
+    return render_template('report.html', pagename='图书信息维护')
+
+
+@app.route('/indexofreaders/readercons')
+def readercons():
+    readers = Readers.query.all()
+    return render_template('report.html', pagename='读者信息维护')
+
+@app.route('/indexofreaders/borrowing')
+def toborrowingpage():
+    books = Books.query.all()
+    return render_template('Borrowing.html', pagename='借阅图书',books=books)
+
+@app.route('/indexofreaders/qrcode')
+def toqrcodepage():
+    return render_template('qrcode.html', pagename='借阅二维码')
+
+# 提供图片资源
+@app.route('/indexofreaders/sendqrcode')
+def serve_image():
+    return app.send_static_file('u7t3U0yJ62Q98HtU.png')
+
 @app.route('/index/searchbook')
 def tosearchbookpage():
     return render_template('searchbook.html', pagename='图书信息维护')
+
+
+@app.route('/index/manage')
+def tomanagepage():
+    return render_template('manage.html', pagename='人员管理')
 
 
 reader_view = ReaderApi.as_view('reader_api')
 app.add_url_rule('/readers/', defaults={'reader_id': None}, view_func=reader_view, methods=['GET'])
 app.add_url_rule('/readers/', view_func=reader_view, methods=['POST'])
 app.add_url_rule('/readers/<int:reader_id>', view_func=reader_view, methods=['GET', 'PUT', 'DELETE'])
+
+
+@app.route('/test')
+def test():
+    return render_template('test.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

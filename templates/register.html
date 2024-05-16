@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='login/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='login/select.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='login/asset/plugin/swiper-bundle.min.css') }}">
+</head>
+
+<body>
+    <div class="content">
+        <div class="left">
+            <div class="title">
+                <div class="title-h1">
+                    Create an Account
+                </div>
+                <div class="tips">
+                    Join our community today!
+                </div>
+            </div>
+            <div class="form">
+                <form action="/register" method="post">
+                    <div class="input-wrapper">
+                        <input type="text" id="username" name="username" placeholder="Username">
+                    </div>
+                    <div class="input-wrapper">
+                        <input type="password" id="password" name="password" placeholder="Password">
+                    </div>
+                    <div class="input-wrapper">
+                        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password">
+                    </div>
+                    <div class="input-wrapper select-wrapper" style="position: relative; display: inline-block;">
+                        <select id="type" name="type" style="appearance: none; -webkit-appearance: none; -moz-appearance: none; background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px; padding: 8px 12px; font-size: 16px; color: #495057; cursor: pointer;">
+                            <option value="student">Student</option>
+                            <option value="teacher">Teacher</option>
+                        </select>
+                    </div>
+                    <button class="btn" type="submit" value="Register">Register</button>
+                </form>
+            </div>
+            <div class="register">
+                Already have an account? <span><a href="/login">Login here</a></span>
+            </div>
+        </div>
+        <div class="right">
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="{{ url_for('static',filename='login/asset/img/1.jpg') }}" alt="">
+                        <span class="img-tips" style="color: black;">
+                            Books are the mirrors of the soul
+                        </span>
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="{{ url_for('static',filename='login/asset/img/2.jpg') }}" alt="">
+                        <span class="img-tips" style="color: black;">
+                            Literature is my Utopia
+                        </span>
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="{{ url_for('static',filename='login/asset/img/3.jpg') }}" alt="">
+                        <span class="img-tips">
+                            A book is a gift you can open again and again
+                        </span>
+                    </div>
+                </div>
+                <!-- If you need pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static',filename='login/asset/plugin/swiper-bundle.min.js') }}"></script>
+    <script>
+        var mySwiper = new Swiper('.swiper', {
+            direction: 'horizontal',
+            loop: true,
+            autoplay: {
+                delay: 4000
+            },
+            pagination: {
+                el: '.swiper-pagination'
+            }
+        })
+    </script>
+</body>
+
+</html>

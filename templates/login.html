@@ -16,13 +16,10 @@
                 <div class="title-h1">
                     Welecom Back!
                 </div>
-                <div class="tips">
-                    Simplify your workflow and boost your productivity
-                    with Tuga's App. Get started for free.
-                </div>
+                <div class="tips"></div>
             </div>
             <div class="form">
-                <form method="post">
+                <form  action="/login" method="post">
                 <div class="input-wrapper">
                     <input type="text" id="username" name="username" placeholder="UserName">
                 </div>
@@ -61,7 +58,7 @@
                 </div>
             </div>
             <div class="register">
-                Not a member? <span>Register now</span>
+                Not a member?<span id="registerLink">Register now</span>
             </div>
         </div>
         <div class="right">
@@ -85,6 +82,10 @@
                             A book is a gift you can open again and again
                         </span>
                     </div>
+
+
+
+
                 </div>
             </div>
         </div>
@@ -101,6 +102,24 @@
                 el: '.swiper-pagination'
             }
         })
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("registerLink").addEventListener("click", function() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/register", true);
+        xhr.onload = function() {
+            if (xhr.status == 200) {
+                // 如果服务器成功响应，则跳转到注册页面
+                window.location.href = "/register";
+            } else {
+                // 如果服务器响应错误，则在控制台输出错误信息
+                console.error("Error:", xhr.statusText);
+            }
+        };
+        xhr.send();
+    });
+});
     </script>
 </body>
 

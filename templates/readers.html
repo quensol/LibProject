@@ -1,0 +1,100 @@
+{% extends 'index.html' %}
+
+
+{% block content %}
+<html lang="zh" data-theme="light">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.conditional.min.css" />
+    <script type="text/javascript" src="../static/js/jquery-3.7.1.min.js" ></script>
+    <style>
+            .table {
+                border-collapse: collapse;
+                width: calc(100% - 210px); /* 总宽度减去左右边距 */
+                margin-left: 30px; /* 左边距 */
+                margin-right: 180px; /* 右边距 */
+                white-space: nowrap;
+                --pico-background-color: #F1F1F1;
+            }
+        </style>
+    <main class="pico" style="background: #E4E9F7">
+       <div class="overflow-auto" style="margin-top: 10px">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">姓名</th>
+                        <th scope="col">密码</th>
+                        <th scope="col">注册日期</th>
+                        <th scope="col">身份</th>
+                        <th scope="col">状态</th>
+                        <th scope="col">账户余额</th>
+                        <th scope="col">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reader in readers %}
+                        <tr>
+                            <th scope="row">{{ reader.reader_name }}</th>
+                            <td>{{ reader.reader_password }}</td>
+                            <td>{{ reader.registration_date }}</td>
+                            <td>{{ reader.reader_type }}</td>
+                            <td>{{ reader.is_active}}</td>
+                            <td>{{ reader.account_balance }}</td>
+                            <td><a style="margin-right: 10px" href="#" id="edit"
+                                   data-toggle="modal"
+                                   data-target="#editModal"
+                                   data-name="{{ reader.reader_name }}" data-password="{{ reader.reader_password }}"
+                                   data-registration_date="{{ reader.registration_date }}" data-reader_type="{{ reader.reader_type }}"
+                                   data-is_active="{{ reader.is_active }}"
+                                   data-account_balance="{{ reader.account_balance }}"
+                            >修改</a> <a href="#">注销</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+       </div>
+            <dialog id="editreaders">
+                  <article class="edit">
+                      <h2>修改图书信息</h2>
+                      <input type="text" name="text" id="name" placeholder="姓名" aria-label="Text" />
+                      <input type="text" name="text" id="password" placeholder="密码" aria-label="Text" />
+                      <input type="text" name="text" id="registration_date" placeholder="注册日期" aria-label="Text" />
+                      <input type="text" name="text" id="reader_type" placeholder="读者身份" aria-label="Text" />
+                      <input type="text" name="text" id="is_active" placeholder="状态" aria-label="Text" />
+                      <input type="text" name="text" id="account_balance" placeholder="余额" aria-label="Text" />
+                      <footer>
+                          <button className="secondary">Cancel</button>
+                          <button>Confirm</button>
+                      </footer>
+                  </article>
+            </dialog>
+       <script>
+            const link = document.getElementById("edit");
+            const dialog = document.getElementById("editreaders");
+            var htmlElement = document.querySelector("html");
+            $('#editreaders').on('showModal', function (event) {
+                var button = $(event.relatedTarget); // 触发模态框的按钮
+                var name = button.data('name'); // 从按钮中获取数据
+                var assword = button.data('password'); // 从按钮中获取数据
+                var registration_date = button.data('registration_date');
+                var reader_type = button.data('reader_type');
+                var is_active = button.data('is_active');
+                var account_balance = button.data('account_balance');
+                var modal = $(this);
+                modal.find('.edit #name').val(name); // 设置 ID input 的值
+                modal.find('.edit #password').val(password); // 设置 Name input 的值
+                modal.find('.edit #registration_date').val(registration_date);
+                modal.find('.edit #reader_type').val(reader_type);
+                modal.find('.edit #is_active').val(tis_active);
+                modal.find('.edit #account_balance').val(account_balance);
+            });
+            link.addEventListener("click", () => {
+                htmlElement.classList.add("modal-is-opening")
+                dialog.showModal();
+                setTimeout(function() {
+                    htmlElement.classList.remove("modal-is-opening");
+                }, 400);
+            });
+        </script>
+    </main>
+</html>
+{% endblock %}

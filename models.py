@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from extension import db
 
 
@@ -7,8 +9,8 @@ class Readers(db.Model):
     reader_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     reader_name = db.Column(db.String(50), unique=True, nullable=False)
     reader_password = db.Column(db.String(100), nullable=False)
-    registration_date = db.Column(db.Date, nullable=False)
-    reader_type = db.Column(db.Enum('teacher', 'student'), nullable=False)
+    registration_date = db.Column(db.Date, default=datetime.now(timezone.utc), nullable=False)
+    reader_type = db.Column(db.Enum('teacher', 'student'), nullable=True)
     is_active = db.Column(db.Boolean, default=True, nullable=True)
     account_balance = db.Column(db.Numeric(10, 2), default=0.00, nullable=True)
 
